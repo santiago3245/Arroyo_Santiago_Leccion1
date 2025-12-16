@@ -11,8 +11,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +40,24 @@ public class SupportTicketController {
     public ResponseEntity<SupportTicket> createTicket(@Valid @RequestBody SupportTicket ticket) {
         SupportTicket createdTicket = service.createTicket(ticket);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTicket);
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<SupportTicket> getTicketById(@PathVariable Long id) {
+        SupportTicket ticket = service.getTicketById(id);
+        return ResponseEntity.ok(ticket);
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<SupportTicket> updateTicket(@PathVariable Long id, @Valid @RequestBody SupportTicket ticket) {
+        SupportTicket updatedTicket = service.updateTicket(id, ticket);
+        return ResponseEntity.ok(updatedTicket);
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTicket(@PathVariable Long id) {
+        service.deleteTicket(id);
+        return ResponseEntity.noContent().build();
     }
     
     @GetMapping

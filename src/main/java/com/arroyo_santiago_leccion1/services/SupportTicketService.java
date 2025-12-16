@@ -14,6 +14,12 @@ public interface SupportTicketService {
     
     SupportTicket createTicket(SupportTicket ticket);
     
+    SupportTicket getTicketById(Long id);
+    
+    SupportTicket updateTicket(Long id, SupportTicket ticket);
+    
+    void deleteTicket(Long id);
+    
     Page<SupportTicket> getTicketsWithFilters(
         String query,
         TicketStatus status,

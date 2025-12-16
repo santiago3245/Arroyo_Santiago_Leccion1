@@ -28,6 +28,38 @@ public class SupportTicketServiceImpl implements SupportTicketService {
     
     @Override
     @Transactional(readOnly = true)
+    public SupportTicket getTicketById(Long id) {
+        return repository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Ticket no encontrado con id: " + id));
+    }
+    
+    @Override
+    @Transactional
+    public SupportTicket updateTicket(Long id, SupportTicket ticket) {
+        SupportTicket existingTicket = getTicketById(id);
+        
+        // Actualizar solo los campos que existen en la entidad
+        existingTicket.setTicketNumber(ticket.getTicketNumber());
+        existingTicket.setRequesterName(ticket.getRequesterName());
+        existingTicket.setStatus(ticket.getStatus());
+        existingTicket.setPriority(ticket.getPriority());
+        existingTicket.setCategory(ticket.getCategory());
+        existingTicket.setEstimatedCost(ticket.getEstimatedCost());
+        existingTicket.setCurrency(ticket.getCurrency());
+        existingTicket.setDueDate(ticket.getDueDate());
+        
+        return repository.save(existingTicket);
+    }
+    
+    @Override
+    @Transactional
+    public void deleteTicket(Long id) {
+        SupportTicket ticket = getTicketById(id);
+        repository.delete(ticket);
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
     public Page<SupportTicket> getTicketsWithFilters(
             String query,
             TicketStatus status,
